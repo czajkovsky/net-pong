@@ -1,0 +1,4 @@
+draughts
+========
+
+Draughts game

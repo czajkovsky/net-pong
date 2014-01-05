@@ -6,7 +6,7 @@
 class Client {
 
 public:
-  Client(int service_port);
+  Client(char* server, int service_port);
   ~Client();
 
 };

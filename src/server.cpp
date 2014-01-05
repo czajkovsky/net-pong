@@ -20,6 +20,8 @@ Server::Server(int service_port) {
 
   string protocol = "tcp";
 
+  char *response = "dupa";
+
   struct sockaddr_in server_addr, client_addr;
 
   int sck, rcv_sck, rcv_len;
@@ -32,12 +34,12 @@ Server::Server(int service_port) {
   sck = socket (PF_INET, SOCK_STREAM, IPPROTO_TCP);
   bind (sck, (struct sockaddr*) &server_addr, sizeof server_addr);
   listen (sck, QSIZE);
-  while (true) {
 
+  while (true) {
     rcv_sck = accept (sck, (struct sockaddr*) &client_addr, (socklen_t*) &rcv_len);
     cout << rcv_sck << "\n";
-    // write (rcv_sck, response, strlen(response));
-    // close(rcv_sck);
+    write (rcv_sck, response, strlen(response));
+    close(rcv_sck);
   }
   close(sck);
 

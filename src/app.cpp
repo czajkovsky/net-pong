@@ -16,8 +16,7 @@ int main () {
     delete server;
   }
   else {
-    // client
-    Client *client = new Client(3000);
+    Client *client = new Client("127.0.0.1", 3000);
     delete client;
   }
   return 0;

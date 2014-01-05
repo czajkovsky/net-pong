@@ -7,9 +7,12 @@ using namespace std;
 
 #define SERVER_MODE 1
 
+void start();
+
 int main () {
 
   int mode = -1;
+  short port = 3003;
 
   scanf("%d", &mode);
 
@@ -19,15 +22,13 @@ int main () {
   SharedMemory *sharedMemory = new SharedMemory();
 
   if(mode == SERVER_MODE) {
-    server = new Server(3000, *sharedMemory);
+    server = new Server(port, *sharedMemory);
     server->run();
-    while(!sharedMemory->gameStatus()) {
-
-    }
-    cout << "yeah!\n";
+    while(!sharedMemory->gameStatus());
+    start();
   }
   else {
-    client = new Client("127.0.0.1", 3000);
+    client = new Client("127.0.0.1", port);
     delete client;
   }
 
@@ -36,4 +37,9 @@ int main () {
   else delete client;
 
   return 0;
+}
+
+void start() {
+  printf("game started!!!!\n");
+
 }

@@ -6,7 +6,7 @@
 class Server {
 
 public:
-  Server(const std::string& port);
+  Server(int service_port);
   ~Server();
 
 };

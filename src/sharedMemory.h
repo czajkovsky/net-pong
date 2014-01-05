@@ -1,7 +1,7 @@
 #ifndef SHARED_MEMORY_H
 #define SHARED_MEMORY_H
 
-#include "mutex.h"
+#include "Mutex.h"
 
 class SharedMemory {
 

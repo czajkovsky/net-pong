@@ -1,8 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "server.h"
-#include "client.h"
-#include "sharedMemory.h"
+#include "Server.h"
+#include "Slient.h"
+#include "SharedMemory.h"
 
 #endif

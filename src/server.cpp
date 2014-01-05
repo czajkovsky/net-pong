@@ -9,8 +9,8 @@
 #include <arpa/inet.h>
 #include <iostream>
 
-#include "server.h"
-#include "sharedMemory.h"
+#include "Server.h"
+#include "SharedMemory.h"
 
 
 using namespace std;

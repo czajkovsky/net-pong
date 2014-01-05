@@ -3,7 +3,7 @@
 
 #include <string>
 #include "IThread.h"
-#include "sharedMemory.h"
+#include "SharedMemory.h"
 
 class Server : public IThread {
 

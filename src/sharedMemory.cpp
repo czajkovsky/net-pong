@@ -1,4 +1,4 @@
-#include "sharedMemory.h"
+#include "SharedMemory.h"
 #include <cassert>
 #include <iostream>
 #include <Box2D/Box2D.h>

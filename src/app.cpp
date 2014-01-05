@@ -6,13 +6,15 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "dimensions.h"
+#include "GameEngine.h"
+#include "SharedMemory.h"
 
 using namespace std;
 using namespace sf;
 
 #define SERVER_MODE 1
 
-void start();
+void start(GameEngine& gameEngine);
 
 int main () {
 
@@ -25,18 +27,23 @@ int main () {
   Client *client = NULL;
 
 
-  SharedMemory *sharedMemory = new SharedMemory();
+
+  SharedMemory sharedMemory;
+  GameEngine gameEngine(sharedMemory);
 
   if(mode == SERVER_MODE) {
-    server = new Server(port, *sharedMemory);
+    server = new Server(port, sharedMemory);
     server->run();
     // while(!sharedMemory->gameStatus());
-    start();
+    gameEngine.run();
   }
   else {
     client = new Client("127.0.0.1", port);
     delete client;
   }
+
+
+  while(true);
 
   // destroy connection
   if(mode == SERVER_MODE) delete server;
@@ -45,7 +52,7 @@ int main () {
   return 0;
 }
 
-void start() {
+void start(GameEngine& gameEngine) {
 
   sf::RenderWindow* window;
 

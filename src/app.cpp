@@ -16,6 +16,8 @@ int main () {
   Server *server = NULL;
   Client *client = NULL;
 
+  SharedMemory *sharedMemory = new SharedMemory();
+
   if(mode == SERVER_MODE) {
     server = new Server(3000);
     server->run();

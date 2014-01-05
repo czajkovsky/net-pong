@@ -4,8 +4,8 @@ LD=g++
 CFLAGS=-Wall
 LDFLAGS=-Wall
 
-SRCS=app.cpp server.cpp client.cpp
-HEADERS=app.h server.h client.h
+SRCS=app.cpp server.cpp client.cpp IThread.cpp
+HEADERS=app.h server.h client.h IThread.h
 TARGET=pong
 
 OBJS=$(addprefix ./obj/, $(addsuffix .o, $(SRCS)))

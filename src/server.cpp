@@ -1,4 +1,3 @@
-#include "server.h"
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -10,9 +9,16 @@
 #include <arpa/inet.h>
 #include <iostream>
 
+#include "server.h"
+
+
 using namespace std;
 
 Server::Server(int service_port) {
+  this->service_port = service_port;
+}
+
+void* Server::start_routine() {
 
   printf("creating server...\n");
 
@@ -29,7 +35,7 @@ Server::Server(int service_port) {
   memset(&server_addr, 0, sizeof server_addr);
   server_addr.sin_addr.s_addr = INADDR_ANY;
   server_addr.sin_family = AF_INET;
-  server_addr.sin_port = htons (service_port);
+  server_addr.sin_port = htons (this->service_port);
 
   sck = socket (PF_INET, SOCK_STREAM, IPPROTO_TCP);
   bind (sck, (struct sockaddr*) &server_addr, sizeof server_addr);
@@ -44,7 +50,6 @@ Server::Server(int service_port) {
   close(sck);
 
   printf("server created...\n");
-
 }
 
 Server::~Server() {

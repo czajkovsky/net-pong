@@ -13,6 +13,11 @@ int main () {
 
   if(mode == 1) {
     Server *server = new Server(3000);
+    server->run();
+    printf("waiting for client...\n");
+    while(1) {
+
+    }
     delete server;
   }
   else {

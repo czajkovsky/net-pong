@@ -2,12 +2,17 @@
 #define SERVER_H
 
 #include <string>
+#include "IThread.h"
 
-class Server {
+class Server : public IThread {
 
 public:
   Server(int service_port);
   ~Server();
+
+private:
+  virtual void* start_routine();
+  int service_port;
 
 };
 

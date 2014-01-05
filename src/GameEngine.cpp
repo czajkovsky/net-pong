@@ -64,6 +64,30 @@ void* GameEngine::start_routine() {
   b2Vec2 vvv(vx, 3.5f);
   ballBody->SetLinearVelocity(vvv);
 
+  b2BodyDef bottomPlayerBodyDef;
+  bottomPlayerBodyDef.type = b2_kinematicBody;
+  bottomPlayerBodyDef.position.Set(0.5f*windowWidthf/scaleFactor, (windowHeightf-60.0f)/scaleFactor);
+  b2Body* bottomPlayerBody = world.CreateBody(&bottomPlayerBodyDef);
+  b2PolygonShape bottomPlayerPolygon;
+  bottomPlayerPolygon.SetAsBox(0.5f*platformWidthf/scaleFactor, 0.5f*platformHeightf/scaleFactor);
+  b2FixtureDef bottomPlayerFixtureDef;
+  bottomPlayerFixtureDef.shape = &bottomPlayerPolygon;
+  bottomPlayerFixtureDef.density = 1.0f;
+  bottomPlayerFixtureDef.friction = 0.2f;
+  bottomPlayerBody->CreateFixture(&bottomPlayerFixtureDef);
+
+  b2BodyDef topPlayerBodyDef;
+  topPlayerBodyDef.type = b2_kinematicBody;
+  topPlayerBodyDef.position.Set(0.5f*windowWidthf/scaleFactor, 60.0f/scaleFactor);
+  b2Body* topPlayerBody = world.CreateBody(&topPlayerBodyDef);
+  b2PolygonShape topPlayerPolygon;
+  topPlayerPolygon.SetAsBox(0.5*platformWidthf/scaleFactor, 0.5f*platformHeight/scaleFactor);
+  b2FixtureDef topPlayerFixtureDef;
+  topPlayerFixtureDef.shape = &topPlayerPolygon;
+  topPlayerFixtureDef.density = 1.0f;
+  topPlayerFixtureDef.friction = 0.2f;
+  topPlayerBody->CreateFixture(&topPlayerFixtureDef);
+
   float32 timeStep = 1.0f / 60.0f;
   int32 velocityIterations = 6;
   int32 positionIterations = 2;

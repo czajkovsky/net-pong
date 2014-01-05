@@ -4,8 +4,8 @@ LD=g++
 CFLAGS=-Wall -lbox2d -framework SFML -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-network
 LDFLAGS=-Wall -lbox2d -framework SFML -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-network
 
-SRCS=app.cpp Server.cpp Client.cpp IThread.cpp Mutex.cpp SharedMemory.cpp GameEngine.cpp
-HEADERS=app.h Server.h Client.h IThread.h Mutex.h SharedMemory.h GameEngine.h dimensions.h
+SRCS=app.cpp Server.cpp Client.cpp IThread.cpp Mutex.cpp SharedMemory.cpp GameEngine.cpp Ball.cpp
+HEADERS=app.h Server.h Client.h IThread.h Mutex.h SharedMemory.h GameEngine.h dimensions.h Ball.h
 TARGET=pong
 
 OBJS=$(addprefix ./obj/, $(addsuffix .o, $(SRCS)))

@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include "app.h"
-#include <Box2D/Box2d.h>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include "dimensions.h"
@@ -52,10 +51,14 @@ void start(SharedMemory& sharedMemory) {
   sf::ContextSettings settings;
   settings.antialiasingLevel = 8;
 
+  int positionX, positionY;
+
+  sharedMemory.setBallPosition(windowWidth / 2, windowHeight / 2);
+
   sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Pong", sf::Style::Default, settings);
   window.setVerticalSyncEnabled(true);
 
-  int positionX, positionY;
+
 
   while (window.isOpen()) {
 
@@ -94,8 +97,8 @@ void start(SharedMemory& sharedMemory) {
     window.draw(topPlayer);
 
     // draw ball
-    positionX = windowWidth / 2;
-    positionY = windowHeight / 2;
+
+    sharedMemory.getBallPosition(positionX, positionY);
 
     sf::CircleShape ball(circleRadius);
     ball.setFillColor(sf::Color::White);

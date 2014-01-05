@@ -1,6 +1,6 @@
 #include <iostream>
 #include <unistd.h>
-
+#include <Box2D/Box2d.h>
 #include "GameEngine.h"
 #include "SharedMemory.h"
 
@@ -12,12 +12,12 @@ GameEngine::GameEngine(SharedMemory& sharedMemory) : sharedMemory(sharedMemory) 
 
 void* GameEngine::start_routine() {
 
-  while(1) {
-    cout << "game engine started...\n";
-    sleep(300);
-  }
+
+  int positionX, positionY;
+  sharedMemory.getBallPosition(positionX, positionY);
+  sharedMemory.setBallPosition(positionX, positionY);
+
 }
 
 GameEngine::~GameEngine() {
-  printf("server destroyed...\n");
 }

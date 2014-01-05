@@ -5,7 +5,7 @@ const int windowWidth = 600;
 const int windowHeight = 700;
 const int circleRadius = 11;
 const int platformWidth = 140;
-const int platformHeight = 14;
+const int platformHeight = 10;
 const int borderSize = 1;
 const int borderMargin = 12;
 

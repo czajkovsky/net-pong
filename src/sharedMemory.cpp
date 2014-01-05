@@ -26,3 +26,17 @@ void SharedMemory::startGame() {
   this->started = true;
   mutex.unlock();
 }
+
+void SharedMemory::getBallPosition(int& x, int& y) const {
+  mutex.lock();
+  this->ball.getPosition(x, y);
+  mutex.unlock();
+}
+
+void SharedMemory::setBallPosition(int x, int y) {
+
+  mutex.lock();
+  this->ball.setPosition(x, y);
+  mutex.unlock();
+
+}

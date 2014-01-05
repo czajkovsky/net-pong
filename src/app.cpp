@@ -52,6 +52,8 @@ void start(SharedMemory& sharedMemory) {
   sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Pong");
   window.setVerticalSyncEnabled(true);
 
+  int positionX, positionY;
+
   while (window.isOpen()) {
 
     sf::Event event;
@@ -69,13 +71,35 @@ void start(SharedMemory& sharedMemory) {
 
     window.clear(sf::Color::White);
 
-    int positionX = windowWidth / 2;
-    int positionY = windowHeight - 60;
+
+    // bottom player
+    positionX = windowWidth / 2;
+    positionY = windowHeight -60;
 
     sf::RectangleShape bottomPlayer(sf::Vector2f(platformWidth, platformHeight));
     bottomPlayer.setPosition(positionX - platformWidth/2, positionY - platformHeight/2);
-    bottomPlayer.setFillColor(sf::Color::Red);
+    bottomPlayer.setFillColor(sf::Color(240, 79, 0));
     window.draw(bottomPlayer);
+
+    // top player
+    positionX = windowWidth / 2;
+    positionY = 60;
+
+    sf::RectangleShape topPlayer(sf::Vector2f(platformWidth, platformHeight));
+    topPlayer.setPosition(positionX - platformWidth/2, positionY - platformHeight/2);
+    topPlayer.setFillColor(sf::Color(240, 79, 0));
+    window.draw(topPlayer);
+
+    // draw ball
+    positionX = windowWidth / 2;
+    positionY = windowHeight / 2;
+
+    sf::CircleShape ball(circleRadius);
+    ball.setFillColor(sf::Color::White);
+    ball.setPosition(positionX - circleRadius, positionY - circleRadius);
+    ball.setOutlineThickness(3);
+    ball.setOutlineColor(sf::Color(0, 118, 207));
+    window.draw(ball);
 
     // draw borders
 

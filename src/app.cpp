@@ -13,6 +13,8 @@ using namespace sf;
 
 #define SERVER_MODE 1
 
+int app_mode;
+
 void start(SharedMemory& sharedMemory);
 
 int main () {
@@ -28,6 +30,8 @@ int main () {
 
   if(mode == SERVER_MODE) {
 
+    app_mode = 0;
+
     Server server(port, sharedMemory);
     server.run();
     // while(!sharedMemory.gameStatus());
@@ -39,6 +43,9 @@ int main () {
 
   }
   else {
+
+    app_mode = 1;
+
     client = new Client("127.0.0.1", port);
 
   }
@@ -54,9 +61,13 @@ void start(SharedMemory& sharedMemory) {
   int positionX, positionY;
 
   sharedMemory.setBallPosition(windowWidth / 2, windowHeight / 2);
+  sharedMemory.setPlayerPosition(app_mode, 50);
 
   sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Pong", sf::Style::Default, settings);
   window.setVerticalSyncEnabled(true);
+
+  sharedMemory.setPlayerPosition(app_mode, windowWidth / 2);
+  sharedMemory.setPlayerPosition((app_mode+1)%2, windowWidth / 2);
 
 
 
@@ -67,19 +78,28 @@ void start(SharedMemory& sharedMemory) {
       if (event.type == sf::Event::Closed) window.close();
     }
 
+    sharedMemory.getPlayerPosition(app_mode, positionX);
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
         // left key is pressed
+      positionX-=7;
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
         // right key is pressed
+      positionX+=7;
     }
+
+    positionX = max(borderMargin + platformWidth / 2, positionX);
+    positionX = min(windowWidth - borderMargin - platformWidth / 2, positionX);
+
+    sharedMemory.setPlayerPosition(app_mode, positionX);
 
     window.clear(sf::Color::White);
 
 
     // bottom player
-    positionX = windowWidth / 2;
+
     positionY = windowHeight -60;
 
     sf::RectangleShape bottomPlayer(sf::Vector2f(platformWidth, platformHeight));

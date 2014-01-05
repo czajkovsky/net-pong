@@ -1,6 +1,7 @@
 #include "sharedMemory.h"
 #include <cassert>
 #include <iostream>
+#include <Box2D/Box2D.h>
 
 using namespace std;
 

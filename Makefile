@@ -1,8 +1,8 @@
 CC=g++
 LD=g++
 
-CFLAGS=-Wall
-LDFLAGS=-Wall
+CFLAGS=-Wall -lbox2d -framework SFML -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-network
+LDFLAGS=-Wall -lbox2d -framework SFML -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio -lsfml-network
 
 SRCS=app.cpp server.cpp client.cpp IThread.cpp mutex.cpp sharedMemory.cpp
 HEADERS=app.h server.h client.h IThread.h mutex.h sharedMemory.h

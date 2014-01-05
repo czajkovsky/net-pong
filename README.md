@@ -1,4 +1,4 @@
-draughts
-========
+pong
+====
 
-Draughts game
+Pong game for 2 players.

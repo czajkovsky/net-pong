@@ -18,6 +18,34 @@ void* GameEngine::start_routine() {
 
   const float scaleFactor = 100.0f;
 
+  b2BodyDef groundBodyDef;
+  groundBodyDef.position.Set(0.5f*windowWidthf/scaleFactor, 0.0f + borderMarginf/scaleFactor);
+  b2Body* groundBody = world.CreateBody(&groundBodyDef);
+  b2PolygonShape groundBox;
+  groundBox.SetAsBox(0.5f*windowWidthf/scaleFactor, borderSizef/scaleFactor);
+  groundBody->CreateFixture(&groundBox, 0.0f);
+
+  b2BodyDef ceilingBodyDef;
+  ceilingBodyDef.position.Set(0.5f*windowWidthf/scaleFactor, windowHeightf/scaleFactor - borderMarginf/scaleFactor);
+  b2Body* ceilingBody = world.CreateBody(&ceilingBodyDef);
+  b2PolygonShape ceilingBox;
+  ceilingBox.SetAsBox(0.5f*windowWidthf/scaleFactor, borderSizef/scaleFactor);
+  ceilingBody->CreateFixture(&ceilingBox, 0.0f);
+
+  b2BodyDef leftBodyDef;
+  leftBodyDef.position.Set(0.0f + borderMarginf/scaleFactor, 0.5f*windowHeightf/scaleFactor);
+  b2Body* leftBody = world.CreateBody(&leftBodyDef);
+  b2PolygonShape leftSideBox;
+  leftSideBox.SetAsBox(borderSizef/scaleFactor, 0.5f*windowHeight/scaleFactor);
+  leftBody->CreateFixture(&leftSideBox, 0.0f);
+
+  b2BodyDef rightBodyDef;
+  rightBodyDef.position.Set(windowWidthf/scaleFactor - borderMarginf/scaleFactor, 0.5f*windowHeightf/scaleFactor);
+  b2Body* rightBody = world.CreateBody(&rightBodyDef);
+  b2PolygonShape rightSideBox;
+  rightSideBox.SetAsBox(borderSizef/scaleFactor, 0.5f*windowHeightf/scaleFactor);
+  rightBody->CreateFixture(&rightSideBox, 0.0f);
+
   b2BodyDef ballBodyDef;
   ballBodyDef.type = b2_dynamicBody;
   ballBodyDef.position.Set(0.5f*(windowWidthf-circleRadiusf)/scaleFactor, 2.0);
@@ -33,7 +61,6 @@ void* GameEngine::start_routine() {
   ballBody->CreateFixture(&ballFixtureDef);
   srand(time(0));
   double vx = (double)rand()/(double)RAND_MAX * 2.0 - 1.0;
-  std::cout << vx << std::endl;
   b2Vec2 vvv(vx, 3.5f);
   ballBody->SetLinearVelocity(vvv);
 

@@ -15,5 +15,6 @@ const float circleRadiusf = static_cast<float>(circleRadius);
 const float platformWidthf = static_cast<float>(platformWidth);
 const float platformHeightf = static_cast<float>(platformHeight);
 const float borderSizef = static_cast<float>(borderSize);
+const float borderMarginf = static_cast<float>(borderMargin);
 
 #endif // DIMMENSIONS_H

@@ -49,7 +49,10 @@ int main () {
 
 void start(SharedMemory& sharedMemory) {
 
-  sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Pong");
+  sf::ContextSettings settings;
+  settings.antialiasingLevel = 8;
+
+  sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Pong", sf::Style::Default, settings);
   window.setVerticalSyncEnabled(true);
 
   int positionX, positionY;

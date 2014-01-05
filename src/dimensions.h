@@ -6,7 +6,8 @@ const int windowHeight = 700;
 const int circleRadius = 16;
 const int platformWidth = 80;
 const int platformHeight = 14;
-const int borderSize = 10;
+const int borderSize = 1;
+const int borderMargin = 12;
 
 const float windowWidthf = static_cast<float>(windowWidth);
 const float windowHeightf = static_cast<float>(windowHeight);

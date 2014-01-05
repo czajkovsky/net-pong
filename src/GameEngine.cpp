@@ -92,9 +92,21 @@ void* GameEngine::start_routine() {
   int32 velocityIterations = 6;
   int32 positionIterations = 2;
 
+  int posX;
+
   while(true) {
 
     world.Step(timeStep, velocityIterations, positionIterations);
+
+    b2Vec2 bottomPlayerPosition = bottomPlayerBody->GetPosition();
+    sharedMemory.getPlayerPosition(0, posX);
+    b2Vec2 bottomPlayerLinearVelocity(30.0f*(float(posX) / scaleFactor - bottomPlayerPosition.x), 0.0f);
+    bottomPlayerBody->SetLinearVelocity(bottomPlayerLinearVelocity);
+
+    b2Vec2 topPlayerPosition = topPlayerBody->GetPosition();
+    sharedMemory.getPlayerPosition(1, posX);
+    b2Vec2 topPlayerLinearVelocity(30.0f*(float(posX) / scaleFactor - topPlayerPosition.x), 0.0f);
+    topPlayerBody->SetLinearVelocity(topPlayerLinearVelocity);
 
     b2Vec2 vcx = ballBody->GetLinearVelocity();
 

@@ -5,24 +5,33 @@
 
 using namespace std;
 
+#define SERVER_MODE 1
+
 int main () {
 
   int mode = -1;
 
-  cin >> mode;
+  scanf("%d", &mode);
 
-  if(mode == 1) {
-    Server *server = new Server(3000);
+  Server *server = NULL;
+  Client *client = NULL;
+
+  if(mode == SERVER_MODE) {
+    server = new Server(3000);
     server->run();
     printf("waiting for client...\n");
     while(1) {
 
     }
-    delete server;
   }
   else {
-    Client *client = new Client("127.0.0.1", 3000);
+    client = new Client("127.0.0.1", 3000);
     delete client;
   }
+
+  // destroy connection
+  if(mode == SERVER_MODE) delete server;
+  else delete client;
+
   return 0;
 }

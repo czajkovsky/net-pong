@@ -2,5 +2,6 @@
 #define MAIN_H
 
 #include "server.h"
+#include "client.h"
 
 #endif

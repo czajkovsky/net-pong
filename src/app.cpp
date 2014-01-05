@@ -17,6 +17,8 @@ int main () {
   }
   else {
     // client
+    Client *client = new Client(3000);
+    delete client;
   }
   return 0;
 }

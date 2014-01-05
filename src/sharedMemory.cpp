@@ -2,8 +2,14 @@
 #include <cassert>
 #include <iostream>
 
-using namespace common;
-
 SharedMemory::SharedMemory() {
   this->started = false;
+}
+
+bool SharedMemory::gameStatus() {
+  return this->started;
+}
+
+void SharedMemory::startGame() {
+  this->started = true;
 }

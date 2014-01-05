@@ -19,12 +19,12 @@ int main () {
   SharedMemory *sharedMemory = new SharedMemory();
 
   if(mode == SERVER_MODE) {
-    server = new Server(3000);
+    server = new Server(3000, *sharedMemory);
     server->run();
-    printf("waiting for client...\n");
-    while(1) {
+    while(!sharedMemory->gameStatus()) {
 
     }
+    cout << "yeah!\n";
   }
   else {
     client = new Client("127.0.0.1", 3000);

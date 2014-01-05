@@ -3,17 +3,17 @@
 
 #include "Mutex.h"
 
-class SharedMemory
-{
+class SharedMemory {
+
 public:
   SharedMemory();
+  bool gameStatus();
+  void startGame();
 
 private:
   bool started;
   mutable Mutex mutex;
 
 };
-
-}
 
 #endif // SHARED_MEMORY_H

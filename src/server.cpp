@@ -10,11 +10,12 @@
 #include <iostream>
 
 #include "server.h"
+#include "sharedMemory.h"
 
 
 using namespace std;
 
-Server::Server(int service_port) {
+Server::Server(int service_port, SharedMemory& sharedMemory) : sharedMemory(sharedMemory) {
   this->service_port = service_port;
 }
 
@@ -43,6 +44,7 @@ void* Server::start_routine() {
 
   while (true) {
     rcv_sck = accept (sck, (struct sockaddr*) &client_addr, (socklen_t*) &rcv_len);
+    sharedMemory.startGame();
     cout << rcv_sck << "\n";
     write (rcv_sck, response, strlen(response));
     close(rcv_sck);

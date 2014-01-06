@@ -14,7 +14,12 @@
 
 using namespace std;
 
-Client::Client(char* server, int service_port) {
+Client::Client(char* server, int service_port, SharedMemory& sharedMemory) : sharedMemory(sharedMemory) {
+  // this->service_port = service_port;
+  // this->service_address = service_address;
+}
+
+void* Client::start_routine() {
 
   printf("creating client...\n");
 
@@ -24,11 +29,10 @@ Client::Client(char* server, int service_port) {
 
   char bufor[BUFSIZE];
 
-
   memset (&sck_addr, 0, sizeof sck_addr);
   sck_addr.sin_family = AF_INET;
-  inet_aton (server, &sck_addr.sin_addr);
-  sck_addr.sin_port = htons (service_port);
+  inet_aton ("127.0.0.1", &sck_addr.sin_addr);
+  sck_addr.sin_port = htons (3003);
 
   if ((sck = socket (PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
     perror ("Unable to create socket\n");
@@ -44,8 +48,7 @@ Client::Client(char* server, int service_port) {
     write (1, bufor, odp);
   close (sck);
 
-  exit (EXIT_SUCCESS);
-
+  // exit (EXIT_SUCCESS);
 }
 
 Client::~Client() {

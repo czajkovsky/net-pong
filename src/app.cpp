@@ -24,8 +24,6 @@ int main () {
 
   scanf("%d", &mode);
 
-  Client *client = NULL;
-
   SharedMemory sharedMemory;
 
   if(mode == SERVER_MODE) {
@@ -46,7 +44,10 @@ int main () {
 
     app_mode = 1;
 
-    client = new Client("127.0.0.1", port);
+    Client client("127.0.0.1", port, sharedMemory);
+    client.run();
+
+    while(1);
 
   }
 
@@ -69,25 +70,25 @@ void start(SharedMemory& sharedMemory) {
   sharedMemory.setPlayerPosition(app_mode, windowWidth / 2);
   sharedMemory.setPlayerPosition((app_mode+1)%2, windowWidth / 2);
 
-
+  sf::Event event;
+  bool focus = false;
 
   while (window.isOpen()) {
 
-    sf::Event event;
-    while (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) window.close();
-    }
-
     sharedMemory.getPlayerPosition(app_mode, positionX);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        // left key is pressed
-      positionX-=7;
+    if (window.pollEvent(event)) {
+      if (event.type == sf::Event::Closed) window.close();
+      if (event.type == sf::Event::GainedFocus) focus = true;
+      if (event.type == sf::Event::LostFocus) focus = false;
+      if (event.type == sf::Event::KeyPressed) {
+        if (event.key.code == sf::Keyboard::Escape) window.close();
+      }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        // right key is pressed
-      positionX+=7;
+    if (focus) {
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) positionX-=7;
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) positionX+=7;
     }
 
     positionX = max(borderMargin + platformWidth / 2, positionX);
@@ -96,7 +97,6 @@ void start(SharedMemory& sharedMemory) {
     sharedMemory.setPlayerPosition(app_mode, positionX);
 
     window.clear(sf::Color::White);
-
 
     // bottom player
 

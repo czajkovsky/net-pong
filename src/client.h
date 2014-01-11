@@ -14,7 +14,7 @@ public:
 private:
   virtual void* start_routine();
   short service_port;
-  char* service_address;
+  char* server;
   SharedMemory& sharedMemory;
 
 };

@@ -73,8 +73,8 @@ void start(SharedMemory& sharedMemory) {
   sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Pong", sf::Style::Default, settings);
   window.setVerticalSyncEnabled(true);
 
-  sharedMemory.setPlayerPosition(app_mode, windowWidth / 2);
-  sharedMemory.setPlayerPosition((app_mode+1)%2, windowWidth / 2);
+  sharedMemory.setPlayerPosition(0, windowWidth / 2);
+  sharedMemory.setPlayerPosition(1, windowWidth / 2);
 
   sf::Event event;
   bool focus = false;
@@ -93,32 +93,30 @@ void start(SharedMemory& sharedMemory) {
     }
 
     if (focus) {
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) positionX-=7;
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) positionX+=7;
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) positionX -= 7;
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) positionX += 7;
     }
-
-    sharedMemory.getCurrentState(ball, players[0], players[1]);
 
     positionX = max(borderMargin + platformWidth / 2, positionX);
     positionX = min(windowWidth - borderMargin - platformWidth / 2, positionX);
 
     sharedMemory.setPlayerPosition(app_mode, positionX);
-
     window.clear(sf::Color::White);
 
-    // bottom player
+    sharedMemory.getCurrentState(ball, players[0], players[1]);
 
+    // bottom player (server)
     positionY = windowHeight -60;
-    players[app_mode].getPosition(positionX);
-
+    players[0].getPosition(positionX);
 
     sf::RectangleShape bottomPlayer(sf::Vector2f(platformWidth, platformHeight));
     bottomPlayer.setPosition(positionX - platformWidth/2, positionY - platformHeight/2);
     bottomPlayer.setFillColor(sf::Color(240, 79, 0));
     window.draw(bottomPlayer);
 
-    // top player
-    players[(app_mode+1)%2].getPosition(positionX);
+
+    // top player (client)
+    players[1].getPosition(positionX);
     positionY = 60;
 
     sf::RectangleShape topPlayer(sf::Vector2f(platformWidth, platformHeight));

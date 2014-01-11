@@ -61,9 +61,10 @@ void* Client::start_routine() {
     write (sck, "connection", sizeof("connection"));
     odp = read (sck, bufor, BUFSIZE);
     if (odp > 0) {
+      sharedMemory.getCurrentState(ball, players[0], players[1]);
       ball.receive(bufor, 1);
       players[0].receive(bufor, 9);
-      players[0].getPosition(x);
+      std::cout << x << "\n";
       sharedMemory.setCurrentState(ball, players[0], players[1]);
     }
   }

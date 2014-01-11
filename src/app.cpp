@@ -20,7 +20,7 @@ void start(SharedMemory& sharedMemory);
 int main () {
 
   int mode = -1;
-  short port = 3003;
+  short port = 3008;
 
   scanf("%d", &mode);
 
@@ -32,7 +32,7 @@ int main () {
 
     Server server(port, sharedMemory);
     server.run();
-    // while(!sharedMemory.gameStatus());
+    while(!sharedMemory.gameStatus());
 
     GameEngine gameEngine(sharedMemory);
     gameEngine.run();
@@ -47,7 +47,9 @@ int main () {
     Client client("127.0.0.1", port, sharedMemory);
     client.run();
 
-    while(1);
+    while(!sharedMemory.gameStatus());
+
+    start(sharedMemory);
 
   }
 
@@ -62,7 +64,6 @@ void start(SharedMemory& sharedMemory) {
   int positionX, positionY;
 
   sharedMemory.setBallPosition(windowWidth / 2, windowHeight / 2);
-  sharedMemory.setPlayerPosition(app_mode, 50);
 
   sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Pong", sf::Style::Default, settings);
   window.setVerticalSyncEnabled(true);

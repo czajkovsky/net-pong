@@ -11,27 +11,24 @@
 
 #include "Server.h"
 #include "SharedMemory.h"
+#include "Ball.h"
+#include "protocol.h"
 
+#define BUFLEN 512
+#define QSIZE 1000
 
 using namespace std;
 
 Server::Server(int service_port, SharedMemory& sharedMemory) : sharedMemory(sharedMemory) {
-  this->service_port = service_port;
+  this->service_port = 3009;
 }
 
 void* Server::start_routine() {
 
-  printf("creating server...\n");
-
-  const int QSIZE = 2048;
-
-  string protocol = "tcp";
-
-  char *response = "dupa";
-
   struct sockaddr_in server_addr, client_addr;
+  int sck, rcv_sck, rcv_len, odp;
 
-  int sck, rcv_sck, rcv_len;
+  char response[BUFLEN];
 
   memset(&server_addr, 0, sizeof server_addr);
   server_addr.sin_addr.s_addr = INADDR_ANY;
@@ -42,16 +39,27 @@ void* Server::start_routine() {
   bind (sck, (struct sockaddr*) &server_addr, sizeof server_addr);
   listen (sck, QSIZE);
 
-  while (true) {
-    rcv_sck = accept (sck, (struct sockaddr*) &client_addr, (socklen_t*) &rcv_len);
-    sharedMemory.startGame();
-    cout << rcv_sck << "\n";
-    write (rcv_sck, response, strlen(response));
-    close(rcv_sck);
-  }
-  close(sck);
+  rcv_sck = accept (sck, (struct sockaddr*) &client_addr, (socklen_t*) &rcv_len);
 
-  printf("server created...\n");
+  sharedMemory.startGame();
+
+  unsigned char state[33];
+
+  Ball ball;
+
+  while (sharedMemory.gameStatus()) {
+    odp = read (rcv_sck, response, BUFLEN);
+    if (odp > 0) {
+      sharedMemory.getCurrentState(ball);
+      state[0] = BEGIN_MESSAGE;
+      ball.send(state, 1);
+      // write (1, response, odp);
+      write (rcv_sck, state, sizeof(state));
+    }
+  }
+  close(rcv_sck);
+
+
 }
 
 Server::~Server() {

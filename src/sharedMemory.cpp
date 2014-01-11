@@ -50,3 +50,19 @@ void SharedMemory::setPlayerPosition(int player, int x) {
   this->players[player].setPosition(x);
   mutex.unlock();
 }
+
+void SharedMemory::setCurrentState(const Ball& b/*, const Player& p0, const Player& p1*/) {
+  mutex.lock();
+  ball = b;
+  // player[0] = p0;
+  // player[1] = p1;
+  mutex.unlock();
+}
+
+void SharedMemory::getCurrentState(Ball& b/*, Player& p0, Player& p1*/) const {
+  mutex.lock();
+  b = ball;
+  // p0 = player[0];
+  // p1 = player[1];
+  mutex.unlock();
+}

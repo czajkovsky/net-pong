@@ -52,19 +52,19 @@ void* Client::start_routine() {
   Ball ball;
   Player players[2];
   int x, y;
-  unsigned char bufor[33];
+  unsigned char state[33];
 
   sharedMemory.startGame();
 
   while(sharedMemory.gameStatus()) {
     sharedMemory.getCurrentState(ball, players[0], players[1]);
-    write (sck, "connection", sizeof("connection"));
-    odp = read (sck, bufor, BUFSIZE);
+    players[1].send(state, 1);
+    write (sck, state, sizeof(state));
+    odp = read (sck, state, BUFSIZE);
     if (odp > 0) {
       sharedMemory.getCurrentState(ball, players[0], players[1]);
-      ball.receive(bufor, 1);
-      players[0].receive(bufor, 9);
-      std::cout << x << "\n";
+      ball.receive(state, 1);
+      players[0].receive(state, 9);
       sharedMemory.setCurrentState(ball, players[0], players[1]);
     }
   }

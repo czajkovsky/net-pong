@@ -7,6 +7,8 @@
 #include "dimensions.h"
 #include "GameEngine.h"
 #include "SharedMemory.h"
+#include "Ball.h"
+#include "Player.h"
 
 using namespace std;
 using namespace sf;
@@ -63,6 +65,9 @@ void start(SharedMemory& sharedMemory) {
 
   int positionX, positionY;
 
+  Player players[2];
+  Ball ball;
+
   sharedMemory.setBallPosition(windowWidth / 2, windowHeight / 2);
 
   sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Pong", sf::Style::Default, settings);
@@ -92,6 +97,8 @@ void start(SharedMemory& sharedMemory) {
       if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) positionX+=7;
     }
 
+    sharedMemory.getCurrentState(ball, players[0], players[1]);
+
     positionX = max(borderMargin + platformWidth / 2, positionX);
     positionX = min(windowWidth - borderMargin - platformWidth / 2, positionX);
 
@@ -102,6 +109,8 @@ void start(SharedMemory& sharedMemory) {
     // bottom player
 
     positionY = windowHeight -60;
+    players[app_mode].getPosition(positionX);
+
 
     sf::RectangleShape bottomPlayer(sf::Vector2f(platformWidth, platformHeight));
     bottomPlayer.setPosition(positionX - platformWidth/2, positionY - platformHeight/2);
@@ -109,7 +118,7 @@ void start(SharedMemory& sharedMemory) {
     window.draw(bottomPlayer);
 
     // top player
-    positionX = windowWidth / 2;
+    players[(app_mode+1)%2].getPosition(positionX);
     positionY = 60;
 
     sf::RectangleShape topPlayer(sf::Vector2f(platformWidth, platformHeight));

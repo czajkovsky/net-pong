@@ -18,8 +18,8 @@ public:
   void getPlayerPosition(int player, int& x) const;
   void setPlayerPosition(int player, int x);
 
-  void getCurrentState(Ball&/*, Player&, Player&*/) const;
-  void setCurrentState(const Ball&/*, const Player&, const Player&*/);
+  void getCurrentState(Ball&, Player&, Player&) const;
+  void setCurrentState(const Ball&, const Player&, const Player&);
 
 private:
   bool started;

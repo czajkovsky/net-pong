@@ -46,13 +46,16 @@ void* Server::start_routine() {
   unsigned char state[33];
 
   Ball ball;
+  Player players[2];
+  int x;
 
   while (sharedMemory.gameStatus()) {
     odp = read (rcv_sck, response, BUFLEN);
     if (odp > 0) {
-      sharedMemory.getCurrentState(ball);
+      sharedMemory.getCurrentState(ball, players[0], players[1]);
       state[0] = BEGIN_MESSAGE;
       ball.send(state, 1);
+      players[0].send(state, 9);
       // write (1, response, odp);
       write (rcv_sck, state, sizeof(state));
     }

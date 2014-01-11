@@ -20,7 +20,7 @@
 using namespace std;
 
 Server::Server(int service_port, SharedMemory& sharedMemory) : sharedMemory(sharedMemory) {
-  this->service_port = 3009;
+  this->service_port = service_port;
 }
 
 void* Server::start_routine() {

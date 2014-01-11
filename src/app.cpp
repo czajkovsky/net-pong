@@ -22,7 +22,7 @@ void start(SharedMemory& sharedMemory);
 int main () {
 
   int mode = -1;
-  short port = 3008;
+  short port = 3009;
 
   scanf("%d", &mode);
 

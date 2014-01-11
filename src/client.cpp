@@ -19,8 +19,8 @@
 
 using namespace std;
 
-Client::Client(char* server, int service_port, SharedMemory& sharedMemory) : sharedMemory(sharedMemory) {
-  // this->service_port = service_port;
+Client::Client(char* server, short service_port, SharedMemory& sharedMemory) : sharedMemory(sharedMemory) {
+  this->service_port = service_port;
   // this->service_address = service_address;
 }
 
@@ -28,16 +28,17 @@ void* Client::start_routine() {
 
   struct sockaddr_in sck_addr;
 
+  std::cout << "port: " << this->service_port << "\n";
+
   char *server = "127.0.0.1"; /* adres IP pętli zwrotnej */
   char *protocol = "tcp";
-  short service_port = 3009;
 
   int sck, odp;
 
   memset (&sck_addr, 0, sizeof sck_addr);
   sck_addr.sin_family = AF_INET;
   inet_aton (server, &sck_addr.sin_addr);
-  sck_addr.sin_port = htons (service_port);
+  sck_addr.sin_port = htons (this->service_port);
 
   if ((sck = socket (PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
     perror ("Unable to create socket...");

@@ -8,12 +8,12 @@
 class Client : public IThread {
 
 public:
-  Client(char* server, int service_port, SharedMemory&);
+  Client(char* server, short service_port, SharedMemory&);
   ~Client();
 
 private:
   virtual void* start_routine();
-  int service_port;
+  short service_port;
   char* service_address;
   SharedMemory& sharedMemory;
 

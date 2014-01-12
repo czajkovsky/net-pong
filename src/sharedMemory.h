@@ -11,6 +11,7 @@ public:
   SharedMemory();
   bool gameStatus();
   void startGame();
+  void endGame();
 
   void getBallPosition(int& x, int& y) const;
   void setBallPosition(int x, int y);

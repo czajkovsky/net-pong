@@ -13,17 +13,21 @@ SharedMemory::SharedMemory() {
 
 bool SharedMemory::gameStatus() {
   int started;
-
   mutex.lock();
   started = this->started;
   mutex.unlock();
-
   return started;
 }
 
 void SharedMemory::startGame() {
   mutex.lock();
   this->started = true;
+  mutex.unlock();
+}
+
+void SharedMemory::endGame() {
+  mutex.lock();
+  this->started = false;
   mutex.unlock();
 }
 

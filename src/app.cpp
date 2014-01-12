@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include "app.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include "app.h"
 #include "dimensions.h"
 #include "GameEngine.h"
 #include "SharedMemory.h"
@@ -84,7 +84,10 @@ void start(SharedMemory& sharedMemory) {
     sharedMemory.getPlayerPosition(app_mode, positionX);
 
     if (window.pollEvent(event)) {
-      if (event.type == sf::Event::Closed) window.close();
+      if (event.type == sf::Event::Closed) {
+        sharedMemory.endGame();
+        window.close();
+      }
       if (event.type == sf::Event::GainedFocus) focus = true;
       if (event.type == sf::Event::LostFocus) focus = false;
       if (event.type == sf::Event::KeyPressed) {

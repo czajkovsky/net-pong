@@ -67,9 +67,6 @@ void* Client::start_routine() {
     }
   }
   close (sck);
-
-  exit (EXIT_SUCCESS);
-
 }
 
 Client::~Client() {

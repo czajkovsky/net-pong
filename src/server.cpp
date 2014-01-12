@@ -52,15 +52,22 @@ void* Server::start_routine() {
   while (sharedMemory.gameStatus()) {
     odp = read (rcv_sck, state, BUFLEN);
     if (odp > 0) {
-      new_player.receive(state, 1);
-      sharedMemory.getCurrentState(ball, players[0], players[1]);
-      sharedMemory.setCurrentState(ball, players[0], new_player);
-      state[0] = BEGIN_MESSAGE;
-      ball.send(state, 1);
-      players[0].send(state, 9);
-      write (rcv_sck, state, sizeof(state));
+      if (state[0] == REQUEST_END) {
+        sharedMemory.endGame();
+        std::cout << "Game ended by client...\n";
+      }
+      else {
+        new_player.receive(state, 1);
+        sharedMemory.getCurrentState(ball, players[0], players[1]);
+        sharedMemory.setCurrentState(ball, players[0], new_player);
+        state[0] = BEGIN_MESSAGE;
+        ball.send(state, 1);
+        players[0].send(state, 9);
+        write (rcv_sck, state, sizeof(state));
+      }
     }
   }
+
   cout << "Ending on server...\n";
   state[0] = REQUEST_END;
   write (rcv_sck, state, sizeof(state));

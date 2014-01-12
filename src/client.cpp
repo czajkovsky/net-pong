@@ -74,9 +74,13 @@ void* Client::start_routine() {
     }
   }
 
+  std::cout << "Finished on client side...\n";
+  state[0] = REQUEST_END;
+  write (sck, state, sizeof(state));
+
   close (sck);
 }
 
 Client::~Client() {
-  printf("client destroyed...\n");
+  printf("Client destroyed...\n");
 }

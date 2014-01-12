@@ -12,6 +12,7 @@
 #include "Client.h"
 #include "Ball.h"
 #include "Player.h"
+#include "protocol.h"
 
 
 #define BUFSIZE 512
@@ -60,12 +61,19 @@ void* Client::start_routine() {
     write (sck, state, sizeof(state));
     odp = read (sck, state, BUFSIZE);
     if (odp > 0) {
-      sharedMemory.getCurrentState(ball, players[0], players[1]);
-      ball.receive(state, 1);
-      players[0].receive(state, 9);
-      sharedMemory.setCurrentState(ball, players[0], players[1]);
+      if (state[0] == REQUEST_END) {
+        sharedMemory.endGame();
+        std::cout << "Game ended by server...\n";
+      }
+      else {
+        sharedMemory.getCurrentState(ball, players[0], players[1]);
+        ball.receive(state, 1);
+        players[0].receive(state, 9);
+        sharedMemory.setCurrentState(ball, players[0], players[1]);
+      }
     }
   }
+
   close (sck);
 }
 

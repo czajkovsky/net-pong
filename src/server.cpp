@@ -61,11 +61,15 @@ void* Server::start_routine() {
       write (rcv_sck, state, sizeof(state));
     }
   }
+  cout << "Ending on server...\n";
+  state[0] = REQUEST_END;
+  write (rcv_sck, state, sizeof(state));
+
   close(rcv_sck);
 
 
 }
 
 Server::~Server() {
-  printf("server destroyed...\n");
+  printf("Server destroyed...\n");
 }

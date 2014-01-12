@@ -83,6 +83,10 @@ void start(SharedMemory& sharedMemory) {
 
     sharedMemory.getPlayerPosition(app_mode, positionX);
 
+    if(!sharedMemory.gameStatus()) {
+      window.close();
+    }
+
     if (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) {
         sharedMemory.endGame();

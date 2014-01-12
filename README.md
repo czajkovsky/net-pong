@@ -37,4 +37,4 @@ Client with custom port number and server address.
 
 ### Screenshots
 
-![pong screenshot](/assets/screenshot.png)
+![pong screenshot](./assets/screenshot.png)

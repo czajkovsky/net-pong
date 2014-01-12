@@ -108,6 +108,28 @@ void* GameEngine::start_routine() {
     b2Vec2 topPlayerLinearVelocity(30.0f*(float(posX) / scaleFactor - topPlayerPosition.x), 0.0f);
     topPlayerBody->SetLinearVelocity(topPlayerLinearVelocity);
 
+    if (true) {
+      for (b2ContactEdge* ce = ballBody->GetContactList(); ce; ce = ce->next) {
+        b2Contact* c = ce->contact;
+        if (c->GetFixtureA()->GetBody() == groundBody) {
+          // TO-DO add point for client
+          b2Vec2 windowCenter(0.5f*(windowWidthf-circleRadiusf)/scaleFactor, 2.0f);
+          ballBody->SetTransform(windowCenter, 0.0f);
+          double vx = (double)rand()/(double)RAND_MAX * 2.0 - 1.0;
+          b2Vec2 vvv(vx, 3.5f);
+          ballBody->SetLinearVelocity(vvv);
+        }
+        if (c->GetFixtureA()->GetBody() == ceilingBody) {
+          // TO-DO add point for server
+          b2Vec2 windowCenter(0.5f*(windowWidthf-circleRadiusf)/scaleFactor, windowHeightf/scaleFactor-2.0f);
+          ballBody->SetTransform(windowCenter, 0.0f);
+          double vx = (double)rand()/(double)RAND_MAX * 2.0 - 1.0;
+          b2Vec2 vvv(vx, -3.5f);
+          ballBody->SetLinearVelocity(vvv);
+        }
+      }
+    }
+
     b2Vec2 vcx = ballBody->GetLinearVelocity();
 
     const float minThrV = 3.5f;
@@ -136,7 +158,6 @@ void* GameEngine::start_routine() {
     usleep(static_cast<int>(1000000.0/60.0));
 
   }
-
 }
 
 GameEngine::~GameEngine() {

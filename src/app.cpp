@@ -180,6 +180,7 @@ void start(SharedMemory& sharedMemory) {
 }
 
 int process_input(int argc, char* argv[]) {
+
   if (argc < 2) launching = false;
   else {
     if (strcmp(argv[1], "-s") == 0) {

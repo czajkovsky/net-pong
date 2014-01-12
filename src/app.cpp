@@ -91,7 +91,10 @@ void start(SharedMemory& sharedMemory) {
       if (event.type == sf::Event::GainedFocus) focus = true;
       if (event.type == sf::Event::LostFocus) focus = false;
       if (event.type == sf::Event::KeyPressed) {
-        if (event.key.code == sf::Keyboard::Escape) window.close();
+        if (event.key.code == sf::Keyboard::Escape) {
+          sharedMemory.endGame();
+          window.close();
+        }
       }
     }
 

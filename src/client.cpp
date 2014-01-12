@@ -28,7 +28,6 @@ Client::Client(char* server, short service_port, SharedMemory& sharedMemory) : s
 void* Client::start_routine() {
 
   struct sockaddr_in sck_addr;
-  char *protocol = "tcp";
   int sck, odp;
 
   bool no_errors = true;
@@ -56,7 +55,6 @@ void* Client::start_routine() {
   if (no_errors) {
     Ball ball;
     Player players[2];
-    int x, y;
     unsigned char state[33];
 
     sharedMemory.startGame();
@@ -89,7 +87,6 @@ void* Client::start_routine() {
     close (sck);
 
   }
-
 }
 
 Client::~Client() {

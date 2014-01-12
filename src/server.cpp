@@ -28,8 +28,7 @@ void* Server::start_routine() {
   struct sockaddr_in server_addr, client_addr;
   int sck, rcv_sck, rcv_len, odp;
 
-  char response[BUFLEN];
-  bool no_errors = true, busy = false;
+  bool no_errors = true;
 
   memset(&server_addr, 0, sizeof server_addr);
   server_addr.sin_addr.s_addr = INADDR_ANY;
@@ -66,7 +65,6 @@ void* Server::start_routine() {
 
     Ball ball;
     Player players[2], new_player;
-    int x;
 
     while (sharedMemory.gameStatus()) {
       odp = read (rcv_sck, state, BUFLEN);

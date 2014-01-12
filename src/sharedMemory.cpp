@@ -8,20 +8,35 @@ using namespace std;
 SharedMemory::SharedMemory() {
   mutex.lock();
   this->started = false;
+  this->forced = false;
   mutex.unlock();
 }
 
 bool SharedMemory::gameStatus() {
-  int started;
+  bool started;
   mutex.lock();
   started = this->started;
   mutex.unlock();
   return started;
 }
 
+bool SharedMemory::forcedToQuit() {
+  bool forced;
+  mutex.lock();
+  forced = this->forced;
+  mutex.unlock();
+  return forced;
+}
+
 void SharedMemory::startGame() {
   mutex.lock();
   this->started = true;
+  mutex.unlock();
+}
+
+void SharedMemory::forceEnd() {
+  mutex.lock();
+  this->forced = true;
   mutex.unlock();
 }
 

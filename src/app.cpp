@@ -34,12 +34,14 @@ int main () {
 
     Server server(port, sharedMemory);
     server.run();
-    while(!sharedMemory.gameStatus());
 
-    GameEngine gameEngine(sharedMemory);
-    gameEngine.run();
+    while(!sharedMemory.gameStatus() && !sharedMemory.forcedToQuit());
 
-    start(sharedMemory);
+    if(!sharedMemory.forcedToQuit()) {
+      GameEngine gameEngine(sharedMemory);
+      gameEngine.run();
+      start(sharedMemory);
+    }
 
   }
   else {
@@ -49,9 +51,11 @@ int main () {
     Client client("127.0.0.1", port, sharedMemory);
     client.run();
 
-    while(!sharedMemory.gameStatus());
+    while(!sharedMemory.gameStatus() && !sharedMemory.forcedToQuit());
 
-    start(sharedMemory);
+    if(!sharedMemory.forcedToQuit()) {
+      start(sharedMemory);
+    }
 
   }
 

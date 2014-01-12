@@ -31,54 +31,65 @@ void* Client::start_routine() {
   char *protocol = "tcp";
   int sck, odp;
 
-  std::cout << server << "\n";
+  bool no_errors = true;
 
   memset (&sck_addr, 0, sizeof sck_addr);
   sck_addr.sin_family = AF_INET;
   inet_aton (this->server, &sck_addr.sin_addr);
   sck_addr.sin_port = htons (this->service_port);
 
-  if ((sck = socket (PF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
-    perror ("Unable to create socket...");
-    exit (EXIT_FAILURE);
+  sck = socket (PF_INET, SOCK_STREAM, IPPROTO_TCP);
+  if (sck < 0) {
+    cout << "Unable to create socket...\n";
+    sharedMemory.forceEnd();
+    no_errors = false;
   }
 
-  if (connect (sck, (struct sockaddr*) &sck_addr, sizeof sck_addr) < 0) {
-    perror ("No connection...");
-    exit (EXIT_FAILURE);
-  }
-
-  Ball ball;
-  Player players[2];
-  int x, y;
-  unsigned char state[33];
-
-  sharedMemory.startGame();
-
-  while(sharedMemory.gameStatus()) {
-    sharedMemory.getCurrentState(ball, players[0], players[1]);
-    players[1].send(state, 1);
-    write (sck, state, sizeof(state));
-    odp = read (sck, state, BUFSIZE);
-    if (odp > 0) {
-      if (state[0] == REQUEST_END) {
-        sharedMemory.endGame();
-        std::cout << "Game ended by server...\n";
-      }
-      else {
-        sharedMemory.getCurrentState(ball, players[0], players[1]);
-        ball.receive(state, 1);
-        players[0].receive(state, 9);
-        sharedMemory.setCurrentState(ball, players[0], players[1]);
-      }
+  if (no_errors) {
+    if (connect (sck, (struct sockaddr*) &sck_addr, sizeof sck_addr) < 0) {
+      cout << "No connection...\n";
+      sharedMemory.forceEnd();
+      no_errors = false;
     }
   }
 
-  std::cout << "Finished on client side...\n";
-  state[0] = REQUEST_END;
-  write (sck, state, sizeof(state));
+  if (no_errors) {
+    Ball ball;
+    Player players[2];
+    int x, y;
+    unsigned char state[33];
 
-  close (sck);
+    sharedMemory.startGame();
+
+    cout << "Connected to server...\n";
+
+    while(sharedMemory.gameStatus()) {
+      sharedMemory.getCurrentState(ball, players[0], players[1]);
+      players[1].send(state, 1);
+      write (sck, state, sizeof(state));
+      odp = read (sck, state, BUFSIZE);
+      if (odp > 0) {
+        if (state[0] == REQUEST_END) {
+          sharedMemory.endGame();
+          cout << "Game ended by server...\n";
+        }
+        else {
+          sharedMemory.getCurrentState(ball, players[0], players[1]);
+          ball.receive(state, 1);
+          players[0].receive(state, 9);
+          sharedMemory.setCurrentState(ball, players[0], players[1]);
+        }
+      }
+    }
+
+    std::cout << "Finished on client side...\n";
+    state[0] = REQUEST_END;
+    write (sck, state, sizeof(state));
+
+    close (sck);
+
+  }
+
 }
 
 Client::~Client() {

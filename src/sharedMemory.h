@@ -10,8 +10,10 @@ class SharedMemory {
 public:
   SharedMemory();
   bool gameStatus();
+  bool forcedToQuit();
   void startGame();
   void endGame();
+  void forceEnd();
 
   void getBallPosition(int& x, int& y) const;
   void setBallPosition(int x, int y);
@@ -23,7 +25,7 @@ public:
   void setCurrentState(const Ball&, const Player&, const Player&);
 
 private:
-  bool started;
+  bool started, forced;
   mutable Mutex mutex;
   Ball ball;
   Player players[2]; // 0 - server, 1 - client

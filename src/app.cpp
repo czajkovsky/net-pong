@@ -13,18 +13,55 @@
 using namespace std;
 using namespace sf;
 
-#define SERVER_MODE 1
+#define SERVER_MODE 0
+#define CLIENT_MODE 1
 
 int app_mode;
 
 void start(SharedMemory& sharedMemory);
 
-int main () {
+int main(int argc, char* argv[]) {
 
   int mode = -1;
-  short port = 3009;
+  short port = 4000;
+  char server_address[50] = "127.0.0.1";
 
-  scanf("%d", &mode);
+  bool launching = true;
+  bool defaults = false;
+
+  if (argc < 2) launching = false;
+  else {
+    if (strcmp(argv[1], "-s") == 0) {
+      mode = SERVER_MODE;
+      if (argc == 3) port = atoi(argv[2]);
+      else if (argc > 3) launching = false;
+      else defaults = true;
+    }
+    else if (strcmp(argv[1], "-c") == 0) {
+      mode = CLIENT_MODE;
+      if (argc == 2) defaults = true;
+      else if (argc == 4) {
+        cout << argv[2] << "\n";
+        strcpy(server_address, argv[2]);
+        port = atoi(argv[3]);
+      }
+      else launching = false;
+    }
+    else launching = false;
+  }
+
+  if (!launching) {
+    cout << "Add '-s port' for server or '-c server_address port' for client.\n";
+    return 0;
+  }
+  if (mode == CLIENT_MODE) {
+    if (defaults) cout << "Using defaults: " << server_address << ":" << port << "\n";
+    else cout << "Using: " << server_address << ":" << port << "\n";
+  }
+  else {
+    if (defaults) cout << "Listening at port [" << port << "] (defualt port)\n";
+    else cout << "Listening at [" << port << "]\n";
+  }
 
   SharedMemory sharedMemory;
 
@@ -48,7 +85,7 @@ int main () {
 
     app_mode = 1;
 
-    Client client("127.0.0.1", port, sharedMemory);
+    Client client(server_address, port, sharedMemory);
     client.run();
 
     while(!sharedMemory.gameStatus() && !sharedMemory.forcedToQuit());

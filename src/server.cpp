@@ -28,7 +28,7 @@ void* Server::start_routine() {
   struct sockaddr_in server_addr, client_addr;
   int sck, rcv_sck, rcv_len, odp;
 
-  bool no_errors = true;
+  bool no_errors = true, game_end = false, game_end_ack = false;
 
   memset(&server_addr, 0, sizeof server_addr);
   server_addr.sin_addr.s_addr = INADDR_ANY;
@@ -71,14 +71,14 @@ void* Server::start_routine() {
       if (odp > 0) {
         if (state[0] == REQUEST_END) {
           sharedMemory.endGame();
+          game_end = true;
           cout << "Game ended by client...\n";
-          end = true;
         }
-        else {
+        else if (state[0] == UPDATE_STATE) {
           new_player.receive(state, 1);
           sharedMemory.getCurrentState(ball, players[0], players[1]);
           sharedMemory.setCurrentState(ball, players[0], new_player);
-          state[0] = BEGIN_MESSAGE;
+          state[0] = UPDATE_STATE;
           ball.send(state, 1);
           players[0].send(state, 9);
           write (rcv_sck, state, sizeof(state));
@@ -86,12 +86,20 @@ void* Server::start_routine() {
       }
     }
 
-    if (!end) {
+    if (!game_end) {
       cout << "Ending on server...\n";
       state[0] = REQUEST_END;
       write (rcv_sck, state, sizeof(state));
+      while(!game_end_ack) {
+        odp = read (rcv_sck, state, BUFLEN);
+        if (odp > 0) {
+          if (state[0] == END_ACK) {
+            game_end_ack = true;
+            cout << "Ack end from client, ending...!\n";
+          }
+        }
+      }
     }
-
 
     close(rcv_sck);
   }

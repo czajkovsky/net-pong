@@ -72,6 +72,7 @@ void* Server::start_routine() {
         if (state[0] == REQUEST_END) {
           sharedMemory.endGame();
           cout << "Game ended by client...\n";
+          end = true;
         }
         else {
           new_player.receive(state, 1);
@@ -85,9 +86,12 @@ void* Server::start_routine() {
       }
     }
 
-    cout << "Ending on server...\n";
-    state[0] = REQUEST_END;
-    write (rcv_sck, state, sizeof(state));
+    if (!end) {
+      cout << "Ending on server...\n";
+      state[0] = REQUEST_END;
+      write (rcv_sck, state, sizeof(state));
+    }
+
 
     close(rcv_sck);
   }

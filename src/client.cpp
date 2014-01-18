@@ -30,7 +30,7 @@ void* Client::start_routine() {
   struct sockaddr_in sck_addr;
   int sck, odp;
 
-  bool no_errors = true;
+  bool no_errors = true, end = false;
 
   memset (&sck_addr, 0, sizeof sck_addr);
   sck_addr.sin_family = AF_INET;
@@ -69,6 +69,7 @@ void* Client::start_routine() {
       if (odp > 0) {
         if (state[0] == REQUEST_END) {
           sharedMemory.endGame();
+          end = true;
           cout << "Game ended by server...\n";
         }
         else {
@@ -80,9 +81,12 @@ void* Client::start_routine() {
       }
     }
 
-    std::cout << "Finished on client side...\n";
-    state[0] = REQUEST_END;
-    write (sck, state, sizeof(state));
+    if (!end) {
+      cout << "Finished on client side...\n";
+      state[0] = REQUEST_END;
+      write (sck, state, sizeof(state));
+    }
+
 
     close (sck);
 

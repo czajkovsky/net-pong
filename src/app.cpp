@@ -66,6 +66,10 @@ void start(SharedMemory& sharedMemory) {
   sf::ContextSettings settings;
   settings.antialiasingLevel = 8;
 
+  string window_name;
+  if (app_mode == SERVER_MODE) window_name = "Pong - Server";
+  else window_name = "Pong - Client";
+
   int positionX, positionY;
 
   Player players[2];
@@ -73,7 +77,7 @@ void start(SharedMemory& sharedMemory) {
 
   sharedMemory.setBallPosition(windowWidth / 2, windowHeight / 2);
 
-  sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Pong", sf::Style::Default, settings);
+  sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), window_name, sf::Style::Default, settings);
   window.setVerticalSyncEnabled(true);
 
   sharedMemory.setPlayerPosition(0, windowWidth / 2);

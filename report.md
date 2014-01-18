@@ -24,7 +24,35 @@ Aby zachować spójność zastosowano mechanizm pamięci współdzielonej.
     <td><code>ESC</code></td><td>zamknięcie gry</td>
   </tr>
 </table>
+
+
+### Protokół
+Do realizacji projektu został zastosowany prosty protokół:
 <table>
+  <tr>
+    <th>Kod</th><th>Nazwa</th><th>Opis</th>
+  </tr>
+  <tr>
+    <td><code>0xAB</code></td>
+    <td><code>REQUEST_UPDATE</code></td>
+    <td>klient prosi o stan gry</td>
+  </tr>
+  <tr>
+    <td><code>0x12</code></td>
+    <td><code>REQUEST_END</code></td>
+    <td>klient/server chce zakończyć grę</td>
+  </tr>
+  <tr>
+    <td><code>0x11</code></td>
+    <td><code>UPDATE_STATE</code></td>
+    <td>server odpowiada jaki jest stan gry</td>
+  </tr>
+  <tr>
+    <td><code>0x13</code></td>
+    <td><code>END_ACK</code></td>
+    <td>klient potwierdza odbiór informacji o końcu gry</td>
+  </tr>
+</table>
 
 ### Kompilacja
 ```

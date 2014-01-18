@@ -5,6 +5,8 @@ Simple Pong game for 2 players. Project was done for Computer Network classes @ 
 
 It uses **Box2d** as physics engine and **SFML** as multimedia library.
 
+More info (in PL) [here](https://github.com/czajkovsky/net-pong/blob/master/report.md).
+
 ### Building
 ```
 make

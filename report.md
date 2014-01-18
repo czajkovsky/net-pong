@@ -1,9 +1,30 @@
-Pong
+Net-Pong
 ====
 
-Prosta gra sieciowa - Pong dla 2 graczy. Wykonana w ramach przedmiotu Sieci Komputerowe 2 na Politechnice Poznańskiej (prowadziący [mgr inż. Maurycy Zamorski](http://www.cs.put.poznan.pl/mzamorski/))
+Prosta gra sieciowa - Pong dla 2 graczy. Wykonana w ramach przedmiotu Sieci Komputerowe 2 na Politechnice Poznańskiej (prowadzący [mgr inż. Maurycy Zamorski](http://www.cs.put.poznan.pl/mzamorski/))
 
-It uses **Box2d** as physics engine and **SFML** as multimedia library.
+Używa **Box2d** jako silnik fizyczny oraz **SFML** jako biblioteka multimediów.
+
+Obliczenia związane z fizyką gry wykonywane są po stronie serwera. Aplikacja działa wielowątkowo, w oddzielnych wątkach realizowane są:
+* komunikacja
+* wyświetlanie GUI
+* silnik gry (tylko po stronie serwera)
+
+Aby zachować spójność zastosowano mechanizm pamięci współdzielonej.
+
+### Sterowanie
+<table>
+  <tr>
+    <th>Klawisz</th><th>Akcja</th>
+  </tr>
+  <tr>
+    <td><code>strzałki</code></td><td>sterowanie lewo/prawo</td>
+  </tr>
+  <tr>
+    <td><code>ESC</code></td><td>zamknięcie gry</td>
+  </tr>
+</table>
+<table>
 
 ### Kompilacja
 ```

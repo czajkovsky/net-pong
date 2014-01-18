@@ -74,7 +74,7 @@ void* Server::start_routine() {
           game_end = true;
           cout << "Game ended by client...\n";
         }
-        else if (state[0] == UPDATE_STATE) {
+        else if (state[0] == REQUEST_UPDATE) {
           new_player.receive(state, 1);
           sharedMemory.getCurrentState(ball, players[0], players[1]);
           sharedMemory.setCurrentState(ball, players[0], new_player);

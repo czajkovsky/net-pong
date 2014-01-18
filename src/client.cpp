@@ -63,7 +63,7 @@ void* Client::start_routine() {
 
     while(sharedMemory.gameStatus()) {
       sharedMemory.getCurrentState(ball, players[0], players[1]);
-      state[0] = UPDATE_STATE;
+      state[0] = REQUEST_UPDATE;
       players[1].send(state, 1);
       write (sck, state, sizeof(state));
       odp = read (sck, state, BUFSIZE);

@@ -74,7 +74,7 @@ void* Client::start_routine() {
           cout << "Game ended by server...\n";
           state[0] = END_ACK;
           write (sck, state, sizeof(state));
-          cout << "Sent ACK ended to server...\n";
+          cout << "Sent ACK end to server...\n";
         }
         else if (state[0] == UPDATE_STATE) {
           sharedMemory.getCurrentState(ball, players[0], players[1]);

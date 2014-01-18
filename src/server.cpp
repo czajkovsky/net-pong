@@ -88,14 +88,20 @@ void* Server::start_routine() {
 
     if (!game_end) {
       cout << "Ending on server...\n";
-      state[0] = REQUEST_END;
-      write (rcv_sck, state, sizeof(state));
+      odp = read (rcv_sck, state, BUFLEN);
+      if (state[0] == REQUEST_END) {
+        game_end_ack = true;
+      }
+      else {
+        state[0] = REQUEST_END;
+        write (rcv_sck, state, sizeof(state));
+      }
       while(!game_end_ack) {
         odp = read (rcv_sck, state, BUFLEN);
         if (odp > 0) {
           if (state[0] == END_ACK) {
             game_end_ack = true;
-            cout << "Ack end from client, ending...!\n";
+            cout << "End ACK from client, ending...\n";
           }
         }
       }
